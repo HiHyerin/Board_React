@@ -19,7 +19,16 @@ function Detail(props){
         })
     },[])
 
-
+    const boardDelete = () =>{
+        axios.get("http://localhost/board/delete_react", {
+            params:{
+                no:no
+            }
+        }).then((res)=>{
+                console.log(res.data);
+                window.location.href = "/board/list";
+            })
+    }
 
     return(
         <div className="container">
@@ -48,8 +57,8 @@ function Detail(props){
                 </tr>
                 <tr>
                     <td colSpan="4" className="text-right">
-                        <a className="btn btn-xs btn-danger">수정</a>
-                        <a className="btn btn-xs btn-info">삭제</a>
+                        <NavLink to={"/board/update/"+boardDetail["no"]} className="btn btn-xs btn-danger">수정</NavLink>
+                        <a className="btn btn-xs btn-info" onClick={boardDelete}>삭제</a>
                         <NavLink to={"/board/list"}  className="btn btn-xs btn-primary">목록</NavLink>
                     </td>
                 </tr>

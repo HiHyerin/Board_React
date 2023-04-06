@@ -1,34 +1,57 @@
-import React, {Fragment, useEffect, useState} from "react";
-import { NavLink } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {NavLink} from "react-router-dom";
 import axios from "axios";
+import Detail from "./Detail";
+import {useParams} from "react-router";
 
-function Insert() {
-    const [boardInsert, setBoardInsert] = useState({});
-
-    useEffect(() => {
-        const regdate = new Date();
-        const formattedDate = regdate.toISOString().slice(0, 10);
-        setBoardInsert((prevState) => ({ ...prevState, regdate: formattedDate }));
-    }, []);
-
-    const insert = async (e) => {
-        e.preventDefault();
-        console.log(boardInsert);
-        await axios
-            .post("http://localhost/board/insert_react", boardInsert)
+function Update(props){
+    let {no} = useParams();
+    const [boardUpdate, setBoardUpdate] = useState({
+        name: "",
+        subject: "",
+        content: "",
+        pwd: ""
+    });
+    useEffect(()=>{
+        console.log("useEffect하하")
+        console.log("no-"+no)
+        axios.get("http://localhost/board/update_react", {
+                    params:{
+                        no:no
+                    }
+                }
+            )
             .then((response) => {
                 console.log(response.data);
-                window.location.href = '/board/list';
+                setBoardUpdate(response.data)
             });
+    },[no]);
+
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setBoardUpdate((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
-    const onChange = (e) => {
-        e.preventDefault();
-        const { value, name } = e.target;
-        setBoardInsert({ ...boardInsert, [name]: value });
-    };
+    const pageChange = ()=>{
+        console.log(boardUpdate.no)
+        window.location.href = "/board/detail/"+boardUpdate.no;
 
-    return (
+    }
+
+    const updateOk = async (e) => {
+        console.log("boardUpdqte="+boardUpdate)
+        axios.post("http://localhost/board/updateOk_react",boardUpdate)
+            .then((response)=>{
+                console.log(response.data);
+                window.location.href = "/board/detail/"+boardUpdate.no;
+        })
+    }
+
+    return(
         <div className="wrapper row3">
             <main className="container clear">
                 <form method="post" action="">
@@ -42,10 +65,11 @@ function Insert() {
                                 <input
                                     type="text"
                                     name="name"
+                                    value={boardUpdate.name}
                                     size="30"
                                     className="input-sm"
                                     style={{ float: "left" }}
-                                    onChange={onChange}
+                                    onChange={handleInputChange}
                                 />
                             </td>
                         </tr>
@@ -57,9 +81,10 @@ function Insert() {
                                 <input
                                     type="text"
                                     name="subject"
+                                    value={boardUpdate.subject}
                                     size="60"
                                     className="input-sm"
-                                    onChange={onChange}
+                                    onChange={handleInputChange}
                                 />
                             </td>
                         </tr>
@@ -72,7 +97,8 @@ function Insert() {
                       rows="10"
                       cols="60"
                       name="content"
-                      onChange={onChange}
+                      value={boardUpdate.content}
+                      onChange={handleInputChange}
                   ></textarea>
                             </td>
                         </tr>
@@ -87,7 +113,7 @@ function Insert() {
                                     size="15"
                                     className="input-sm"
                                     style={{ float: "left" }}
-                                    onChange={onChange}
+                                    onChange={handleInputChange}
                                 />
                             </td>
                         </tr>
@@ -95,18 +121,15 @@ function Insert() {
                         <tr>
                             <td colSpan="2" className="text-center">
                                 <input
-                                    type="submit"
+                                    type="button"
                                     value="글쓰기"
                                     className="btn btn-sm btn-danger"
-                                    onClick={insert}
+                                    onClick={updateOk}
                                 />
 
-                                <NavLink
-                                    to={"/board/list"}
-                                    className="btn btn-sm btn-primary"
-                                >
+                                <a className="btn btn-sm btn-primary" onClick={()=>pageChange()}>
                                     취소
-                                </NavLink>
+                                </a>
                             </td>
                         </tr>
                         </tbody>
@@ -114,7 +137,8 @@ function Insert() {
                 </form>
             </main>
         </div>
-    );
+            
+    )
 }
 
-export default Insert;
+export default Update;
