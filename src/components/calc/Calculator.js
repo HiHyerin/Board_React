@@ -59,8 +59,8 @@ function Calculator(props){
       }
     `;
 
-    const getNum = (x) => {
-        setCalc((prev) => prev + x.target.value)
+    const getNum = (e) => {
+        setCalc((prev) => prev + e.target.value)
     }
 
     const allClear = () => {
@@ -72,14 +72,15 @@ function Calculator(props){
         setCalc((prev) => str);
     }
 
-    const getResult = (x) => {
-        getNum(x);
+    const getResult = () => {
+        console.log("calc"+calc)
         axios.get('http://localhost/calc/result_react',{
             params:{
-                x:x
+                x:calc
             }
         }).then(response=>{
             console.log(response.data)
+            setCalc(response.data)
         })
     }
 
@@ -91,11 +92,11 @@ function Calculator(props){
                 <Button onClick={allClear}>AC</Button>
                 <Button onClick={delCalc}>DEL</Button>
                 <CalButton value="%" onClick={getNum}>%</CalButton>
-                <CalButton value="÷" onClick={getNum}>÷</CalButton>
+                <CalButton value="/" onClick={getNum}>÷</CalButton>
                 <Button value={7} onClick={getNum}>7</Button>
                 <Button value={8} onClick={getNum}>8</Button>
-                <Button value={9} onClick={getNum}>9</Button>
-                <CalButton value="×" onClick={getNum}>×</CalButton>
+                <Button value="9" onClick={getNum}>9</Button>
+                <CalButton value="*" onClick={getNum}>×</CalButton>
                 <Button value={4} onClick={getNum}>4</Button>
                 <Button value={5} onClick={getNum}>5</Button>
                 <Button value={6} onClick={getNum}>6</Button>
