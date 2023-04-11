@@ -13,7 +13,7 @@ function Nav(){
                     <li className="active"><a href="/" style={{"backgroundColor":"#F9A7A7"}}>Home</a></li>
                     <li><NavLink to="board/list" >게시판</NavLink></li>
                     <li><a href="#">갤러리</a></li>
-                    <li><a href="#">계산기</a></li>
+                    <li><NavLink to="calc/calculator">계산기</NavLink></li>
                 </ul>
                 <form className="navbar-form navbar-left" action="/action_page.php" >
                     <div className="form-group">

@@ -8,6 +8,7 @@ import List from "./components/board/List";
 import Detail from "./components/board/Detail";
 import Insert from "./components/board/Insert";
 import Update from "./components/board/Update";
+import Calculator from "./components/calc/Calculator";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route exact path={"/board/detail/:no"} element={<Detail/>}/>
               <Route exact path={"/board/insert"} element={<Insert/>}/>
               <Route exact path={"/board/update/:no"} element={<Update/>}/>
+              <Route exact path={"/calc/calculator"} element={<Calculator/>}/>
           </Routes>
               {/*<Footer/>    */}
           </Router>
